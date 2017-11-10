@@ -51,7 +51,7 @@ module.exports = function(passport) {
       function(req, username, password, done) {
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        console.log(req.body);
+        console.log(req.file);
         connection.query(
           "SELECT * FROM users WHERE username = ?",
           [username],
@@ -68,24 +68,26 @@ module.exports = function(passport) {
               // create the user
               var newUserMysql = {
                 username: username,
-                password: bcrypt.hashSync(password, null, null), // use the generateHash function in our user model
+                dept: req.body.dept,
+                aadharNumber: req.body.aadharNumber,
+                // use the generateHash function in our user model
               };
 
               var insertQuery =
-                "INSERT INTO users ( username, password, address, name, email, dept, dob, phone, pic, community, bloodGroup,aadharNumber ) values (?,?,?,?,?,?,?,?,?,?,?,?)";
+                "INSERT INTO users ( username, password, address, name, email, dept, dob, phone, pic, community, bloodGroup, aadharNumber ) values (?,?,?,?,?,?,?,?,?,?,?,?)";
 
               connection.query(
                 insertQuery,
                 [
                   newUserMysql.username,
-                  newUserMysql.password,
+                  bcrypt.hashSync(password, null, null),
                   req.body.address,
                   req.body.name,
                   req.body.email,
                   req.body.dept,
                   req.body.dob,
                   req.body.phone,
-                  req.body.pic,
+                  req.file.originalname,
                   req.body.community,
                   req.body.bloodGroup,
                   req.body.aadharNumber,

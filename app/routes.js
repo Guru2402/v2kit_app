@@ -1,5 +1,5 @@
 // app/routes.js
-module.exports = function(app, passport) {
+module.exports = function(app, passport, upload) {
   // =====================================
   // HOME PAGE (with login links) ========
   // =====================================
@@ -26,7 +26,6 @@ module.exports = function(app, passport) {
     }),
     function(req, res) {
       console.log("hello");
-
       if (req.body.remember) {
         req.session.cookie.maxAge = 1000 * 60 * 3;
       } else {
@@ -42,21 +41,24 @@ module.exports = function(app, passport) {
   // show the signup form
   app.get("/signup", function(req, res) {
     // render the page and pass in any flash data if it exists
-    res.render("students.ejs", { message: req.flash("signupMessage") });
+    res.render("students.ejs", {
+      error: req.flash("signupMessage"),
+    });
   });
 
   // process the signup form
   app.post(
-    "/signup",
+    "/studentsignup",
+    upload.single("pic"),
     passport.authenticate("local-signup", {
-      successRedirect: "/home", // redirect to the secure profile section
+      successRedirect: "/profile", // redirect to the secure profile section
       failureRedirect: "/signup", // redirect back to the signup page if there is an error
       failureFlash: true, // allow flash messages
-    }),
-    user => {
-      console.log(user);
-    }
+    })
   );
+  app.post("/student", upload.single("pic"), (req, res) => {
+    res.json(req.body);
+  });
 
   // =====================================
   // PROFILE SECTION =========================
@@ -69,7 +71,7 @@ module.exports = function(app, passport) {
     });
   });
 
-  app.get("/home", isLoggedIn, (req, res) => {
+  app.get("/home", (req, res) => {
     res.json("home" + req.user);
   });
   // =====================================

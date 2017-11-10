@@ -14,14 +14,13 @@
         <script type="text/javascript" src="semantic.min.js" ></script>
     </head>
 <body style="background-image: url(de1.jpg);background-size:cover;">
-    <% var error ; if (error) { %>
+    <% if (error) { %>
        <div class="alert alert-danger"><%= error %></div>
      <% } %>
-
  <div class="q">
   <div class="ui container segment" style="width:35%; margin-top:2em; margin-bottom: 1.5em">
       <h1 class="ui header" style="margin : 0 auto;">Sign-Up</h1>
-        <form  id="frmUploader" enctype="multipart/form-data" class="ui form" action="/studentsignup" method="post">
+        <form id="frmUploader" enctype="multipart/form-data" class="ui form" action="/studentsignup" method="post">
           <h4 class="ui dividing header"style="padding-top: 5;">Personal Information</h4>
           <div class="two fields">
             <div class="field">
