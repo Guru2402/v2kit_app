@@ -44,7 +44,7 @@ module.exports = function(app, passport, upload) {
   // SIGNUP ==============================
   // =====================================
   // show the signup form
-  app.get("/signup", function(req, res) {
+  app.get("/studentsignup", function(req, res) {
     // render the page and pass in any flash data if it exists
     res.render("students.ejs", {
       error: req.flash("signupMessage"),
@@ -86,6 +86,25 @@ module.exports = function(app, passport, upload) {
         res.render("home", { item: user[0] });
       }
     );
+  });
+  //
+  // ====================================
+  // Edit profile =======================
+  // ====================================
+  app.get("/editstudent", isLoggedIn, (req, res) => {
+    connection.query(
+      "SELECT * FROM users WHERE username = ?",
+      [req.user.username],
+      (err, user) => {
+        console.log("+++++" + req.user);
+        console.log(user[0]);
+        res.render("editpagestudent", { item: user[0] });
+      }
+    );
+  });
+  app.post("/editstudent", upload.single("pic"), isLoggedIn, (req, res) => {
+    console.log(req.body);
+    res.json(req.body);
   });
   // =====================================
   // LOGOUT ==============================

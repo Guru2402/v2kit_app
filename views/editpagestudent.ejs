@@ -70,8 +70,14 @@
                       <div class="col-md-3">
                         <div class="text-center">
                           <img src="uploads/<%= item.pic %>" width="200" height="200" class="avatar img-circle img-responsive" alt="avatar">
-                          <h6>Upload a different photo...</h6>
-                          <input type="file" name="pic" value="" class="form-control" style="border:0px" required>
+                          <h6>To upload a different photo...</h6>
+                          <input type="button" class="btn btn-danger" id="uploadPic" value="Click">
+                            <input id="image" type="file" style="display:none" value="<%=item.pic%>" name="pic">
+<script>
+$("#uploadPic").click(() => {
+  $("#image").css({ display: "block" });
+});
+</script>
                         </div>
                       </div>
 
@@ -93,18 +99,18 @@
                                 </div>
                             </div>
                             <div class="disabled field">
-                             <label style="color:#800e10;">Reg.No </label>
-                             <input type="number" name="regNo" value="<%= item.regNo %>" >
+                             <label style="color:#800e10;">Aadhar.No </label>
+                             <input type="number" name="aadharNumber" value="<%= item.aadharNumber %>" >
                             </div>
                             <div class="field">
                               <label style="color:#800e10;">Date of birth</label>
                                 <div class="field">
-                                  <input type="date" name="dob" value="<%= item.dob %>" required>
+                                  <input type="date" name="dob" value="<%=  item.dob.toISOString().slice(0, 10);%>" required>
                                 </div>
                             </div>
                             <div class="field">
                              <label style="color:#800e10;">Mobile</label>
-                             <input type="number" name="mobile" value="<%= item.mobile %>" required>
+                             <input type="number" name="phone" value="<%= item.phone %>" required>
                             </div>
                             <div class="field">
                               <label style="color:#800e10;">Blood Group</label>
@@ -143,15 +149,15 @@
                                 <option value="M.E">M.E</option>
                               </select>
                             </div>
-                            <div class="disabled field">
+                            <div class="field">
                               <label style="color:#800e10;">E-mail</label>
-                              <input type="text" name="email" value="<%= item.Email %>" ></div>
+                              <input type="text" name="email" value="<%= item.email %>" ></div>
                           <div class="field">
                             <label style="color:#800e10;">Address</label>
-                            <textarea name="address" value=""></textarea>
+                            <textarea name="address" value="<%= item.address %>"><%= item.address %></textarea>
                           </div>
                           <h4 class="ui dividing header">Account Info</h4>
-                            <div class="required field">
+                            <div class="required field disabled ">
                               <label style="color:#800e10;">Username</label>
                               <div class="ui icon input">
                                 <input type="text" value="<%= item.username %>" name="username">
@@ -161,14 +167,14 @@
                             <div class="required field">
                               <label style="color:#800e10;">Password</label>
                               <div class="ui icon input">
-                                <input type="password" name="pwd">
+                                <input type="password" name="password" required>
                                 <i class="lock icon"></i>
                               </div>
                             </div>
                           <div class="form-group">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-8">
-                              <input type="submit" class="btn btn-primary" value="Save Changes">
+                              <input type="submit" class="btn btn-danger" value="Save Changes" >
                               <span></span>
                               <input type="reset" class="btn btn-default" value="Cancel">
                             </div>
