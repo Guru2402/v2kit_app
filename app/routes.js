@@ -1,4 +1,9 @@
 // app/routes.js
+var mysql = require("mysql");
+var dbconfig = require("../config/database");
+var connection = mysql.createConnection(dbconfig.connection);
+connection.query("USE " + dbconfig.database);
+
 module.exports = function(app, passport, upload) {
   // =====================================
   // HOME PAGE (with login links) ========
@@ -18,7 +23,7 @@ module.exports = function(app, passport, upload) {
 
   // process the login form
   app.post(
-    "/login",
+    "/studentlogin",
     passport.authenticate("local-login", {
       successRedirect: "/home", // redirect to the secure profile section
       failureRedirect: "/login", // redirect back to the signup page if there is an error
@@ -51,7 +56,7 @@ module.exports = function(app, passport, upload) {
     "/studentsignup",
     upload.single("pic"),
     passport.authenticate("local-signup", {
-      successRedirect: "/profile", // redirect to the secure profile section
+      successRedirect: "/home", // redirect to the secure profile section
       failureRedirect: "/signup", // redirect back to the signup page if there is an error
       failureFlash: true, // allow flash messages
     })
@@ -65,14 +70,22 @@ module.exports = function(app, passport, upload) {
   // =====================================
   // we will want this protected so you have to be logged in to visit
   // we will use route middleware to verify this (the isLoggedIn function)
-  app.get("/profile", isLoggedIn, function(req, res) {
+  app.get("/profile", function(req, res) {
     res.render("profile.ejs", {
       user: req.user, // get the user out of session and pass to template
     });
   });
 
-  app.get("/home", (req, res) => {
-    res.json("home" + req.user);
+  app.get("/home", isLoggedIn, (req, res) => {
+    connection.query(
+      "SELECT * FROM users WHERE username = ?",
+      [req.user.username],
+      (err, user) => {
+        console.log("+++++" + req.user);
+        console.log(user[0]);
+        res.render("home", { item: user[0] });
+      }
+    );
   });
   // =====================================
   // LOGOUT ==============================
