@@ -72,7 +72,7 @@ module.exports = function(passport) {
               };
 
               var insertQuery =
-                "INSERT INTO users ( username, password, address, name, email, dept, dob, phone, pic, community, bloodGroup ) values (?,?,?,?,?,?,?,?,?,?,?)";
+                "INSERT INTO users ( username, password, address, name, email, dept, dob, phone, pic, community, bloodGroup,aadharNumber ) values (?,?,?,?,?,?,?,?,?,?,?,?)";
 
               connection.query(
                 insertQuery,
@@ -88,6 +88,7 @@ module.exports = function(passport) {
                   req.body.pic,
                   req.body.community,
                   req.body.bloodGroup,
+                  req.body.aadharNumber,
                 ],
                 function(err, rows) {
                   if (err) console.log(err);

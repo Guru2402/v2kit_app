@@ -20,7 +20,7 @@ module.exports = function(app, passport) {
   app.post(
     "/login",
     passport.authenticate("local-login", {
-      successRedirect: "/profile", // redirect to the secure profile section
+      successRedirect: "/home", // redirect to the secure profile section
       failureRedirect: "/login", // redirect back to the signup page if there is an error
       failureFlash: true, // allow flash messages
     }),
@@ -42,14 +42,14 @@ module.exports = function(app, passport) {
   // show the signup form
   app.get("/signup", function(req, res) {
     // render the page and pass in any flash data if it exists
-    res.render("signup.ejs", { message: req.flash("signupMessage") });
+    res.render("students.ejs", { message: req.flash("signupMessage") });
   });
 
   // process the signup form
   app.post(
     "/signup",
     passport.authenticate("local-signup", {
-      successRedirect: "/profile", // redirect to the secure profile section
+      successRedirect: "/home", // redirect to the secure profile section
       failureRedirect: "/signup", // redirect back to the signup page if there is an error
       failureFlash: true, // allow flash messages
     }),
@@ -69,6 +69,9 @@ module.exports = function(app, passport) {
     });
   });
 
+  app.get("/home", isLoggedIn, (req, res) => {
+    res.json("home" + req.user);
+  });
   // =====================================
   // LOGOUT ==============================
   // =====================================
