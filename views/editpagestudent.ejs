@@ -65,17 +65,19 @@
                 <div class="container" style="width:50%;margin-top:20px">
                     <h1>Edit Profile</h1>
                     <hr>
-                    <form enctype="multipart/form-data" class="ui form" action="/editstudent" method="post">
+                    <form  id="frmUploader" enctype="multipart/form-data" class="ui form" action="/editstudent" method="post">
                     <div class="row">
                       <div class="col-md-3">
                         <div class="text-center">
                           <img src="uploads/<%= item.pic %>" width="200" height="200" class="avatar img-circle img-responsive" alt="avatar">
-                          <h6>To upload a different photo...</h6>
-                          <input type="button" class="btn btn-danger" id="uploadPic" value="Click">
-                            <input id="image" type="file" style="display:none" value="<%=item.pic%>" name="pic">
+                          <h6 ><%=item.pic%></h6>
+                          <input type="button" class="btn btn-danger" id="uploadPic" value="Upload photo">
+                          <input id="image" type="text" style="display:none" value="<%=item.pic%>" name="pic">
 <script>
 $("#uploadPic").click(() => {
-  $("#image").css({ display: "block" });
+  // $("#image").css({ display: "block" });
+  $(".text-center").innerHTML =
+    '<input type="file" style="display:none" value="" name="pic">';
 });
 </script>
                         </div>

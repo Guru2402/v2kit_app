@@ -103,8 +103,27 @@ module.exports = function(app, passport, upload) {
     );
   });
   app.post("/editstudent", upload.single("pic"), isLoggedIn, (req, res) => {
-    console.log(req.body);
-    res.json(req.body);
+    console.log(req.file);
+    connection.query(
+      `UPDATE users SET ( password, address, name, email, dob, phone, pic, community, bloodGroup, aadharNumber ) values (?,?,?,?,?,?,?,?,?,?)`,
+      [
+        req.body.password,
+        req.body.address,
+        req.body.name,
+        req.body.email,
+        req.body.dob,
+        req.body.phone,
+        req.body.pic || req.file.originalname,
+        req.body.community,
+        req.body.bloodGroup,
+        req.body.aadharNumber,
+      ],
+      (err, rows) => {
+        console.log("+++++" + req.user);
+        console.log(rows[0]);
+        res.render("editpagestudent", { item: rows[0] });
+      }
+    );
   });
   // =====================================
   // LOGOUT ==============================
